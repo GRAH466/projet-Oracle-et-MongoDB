@@ -1,0 +1,93 @@
+Mini-Mémoire : Gestion d'une Base de Données MongoDB en Python
+Introduction
+Ce document décrit les différentes étapes de manipulation d'une base de données MongoDB à l'aide du langage Python.
+ Le projet se concentre sur la gestion d'une base de donnée "etd" d'une collection intitulée "Cinema ", où sont enregistrées des informations sur des films, notamment leur titre, l'année de sortie, les acteurs principaux et les réalisateurs.
+
+Connexion à la Base de Données
+Pour interagir avec MongoDB, nous avons utilisé le module pymongoet suivi les étapes suivantes pour établir une connexion :
+
+from pymongo import MongoClient
+import pymongo
+
+# Se connecter à MongoDB
+GRAH = MongoClient(host='localhost', port=27017)
+
+# Se connecter à la base de données
+db = GRAH.etd
+
+
+Insertion de données
+Nous avons inséré un dictionnaire contenant les détails d'un film dans la collection Cinemaà l'aide de la méthode insert_one:
+
+# Insertion d'un dictionnaire dans la collection
+yabi = {
+    'nom': 'vice versa',
+    'annee': 2022,
+    'acteurs': 'sidibe issa',
+    'realisateurs': { 
+        'nom': 'grah',
+        'prenom': 'lowa-ezechiel'
+    }
+}                  
+
+result = db.Cinema.insert_one(yabi)
+print(result)
+
+
+Lecture des données
+Pour lire les données insérées, plusieurs méthodes ont été utilisées :
+
+1-Affichage de Tous les Films :
+
+result = db.Cinema.find()
+for a in result:
+    print(a['nom'])
+
+2-Affichage des 5 Premières Entrées :
+result = db.Cinema.find().limit(5)
+print(result)
+
+3-Tri par Année (Ordre Croissant) :
+result = db.Cinema.find().sort("annee", pymongo.ASCENDING)
+for a in result:
+    print(a)
+
+
+Modifier
+Pour mettre à jour un document existant dans la collection Cinema,update_one. cette mehtode:
+
+db.Cinema.update_one({'nom':'vice versa'}),{'$set':{'annee':2023}}
+if result.modified_count>=1:
+    print("Document modifié avec succès")
+else:
+    print("Aucune modification apportée")
+
+//afficher la modification:
+result = db.Cinema.find({'nom':vice versa'},{'annee':1' , '_id':0})
+print(result)
+
+
+Agrégation : Comptage des Réalisateurs
+Une opération d'agrégation a été réalisée pour compter le nombre de réalisateurs présents dans la collection Cinema. Cette opération utilise les opérateurs $groupet $count:
+balthazar = [
+    {'$group': {'_id': '$realisateur', 'count': {'$sum': 1}}}
+]
+result = db.Cinema.aggregate(balthazar)
+for b in result:
+    print(b)
+
+Fermeture de la Connexion
+Pour assurer une bonne gestion des ressources, la connexion à MongoDB a été fermée à la fin des opérations :
+GRAH.close()
+
+
+Conclusion
+Ce projet illustre les bases de la manipulation d'une base de données MongoDB avec Python.
+ Il met en évidence des opérations fondamentales telles que l'insertion, la lecture, le tri et l'agrégation de données.
+ Le code est optimisé pour être simple et clair, tout en respectant les meilleures pratiques de gestion des ressources.
+
+
+
+
+
+

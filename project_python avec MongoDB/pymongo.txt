@@ -1,0 +1,48 @@
+from pymongo import MongoClient
+import pymongo
+
+// se connecter a la connexion de mongo db
+GRAH=MongoClient(host='localhost',port=27017)
+
+//se connecter a la base de donnée
+db=GRAH.etd
+
+//inserer un dictionnaire dans la collection de mongo db
+yabi= {
+    'nom':'vice versa',
+   
+    'annee':2022,
+       'acteurs':'sidibe issa',
+    'realisateurs':{ 
+    'nom':'grah','prenom':'lowa-ezechiel'
+    }}                  
+
+result=db.Cinema.insert_one(yabi)
+print(result)
+
+//afficher le dictionnaire dans la collection de mongodb
+result=db.Cinema.find()
+for a in result:
+    print(a['nom'])
+
+//afficher les 5 premières lignes de la collection
+result=db.Cinema.find().limit(5)
+print(result)
+
+
+//
+result=db.Cinema.find().sort("annee",pymongo.ASCENDING)
+for a in result:
+    print(a)
+
+// utilisation d'une condition for et une aggregation ($group et $count) pour compter le nombre de realisateur 
+balthazar=[{'$group':{'_id':'$realisateur','count':{'$sum':1}}}]
+result=db.Cinema.aggregate(balthazar)
+for b in result:
+    print(b)
+
+
+
+
+
+GRAH.close() // fermeture de la connexion 
